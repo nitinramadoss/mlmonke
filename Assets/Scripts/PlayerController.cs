@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdatePosition();   
+        UpdateMCPosition();   
 
     }
 
@@ -27,27 +27,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void UpdatePosition()
+    void UpdateMCPosition()
     {
         position.x = Input.GetAxisRaw("Horizontal");
         position.y = Input.GetAxisRaw("Vertical");
 
-        if (position.x == 1)
+        if (position.x == 0 && position.y == 0)
         {
-            this.GetComponent<Animator>().Play("walkHRight");
-        } else if (position.x == -1)
-        {
-            this.GetComponent<Animator>().Play("walkHLeft");
-        }
-
-        if (position.y == 1)
-        {
-            this.GetComponent<Animator>().Play("walkVUp");
-        }
-        else if (position.y == -1)
-        {
-            this.GetComponent<Animator>().Play("walkVDown");
-        }
-       
+            this.GetComponent<Animator>().Play("idle");
+        } else {
+            if (position.x == 1)
+            {
+                this.GetComponent<Animator>().Play("walkHRight");
+            }
+            else if (position.x == -1)
+            {
+                this.GetComponent<Animator>().Play("walkHLeft");
+            }
+            else if (position.y == 1)
+            {
+                this.GetComponent<Animator>().Play("walkVUp");
+            }
+            else if (position.y == -1)
+            {
+                this.GetComponent<Animator>().Play("walkVDown");
+            }
+        }   
     } 
 }
