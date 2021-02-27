@@ -49,3 +49,11 @@ def unpack_animals(animals):
         animals[0].key: [(a.get_weight(), a.get_red(),
                           a.get_green(), a.get_blue(), identify_color(a)) for a in animals]
     }
+
+
+def merge_animal_dicts(*dicts):
+    """Combine any number of dictionaries into one dictionary."""
+    full = dicts[0]
+    for d in dicts:
+        full.update[d]
+    return full
