@@ -3,6 +3,8 @@
 # the animal generated corresponds to the key value
 # color_rgbs is a dictionary that maps string color names to rgb tuples
 from definitions import mappings, color_rgbs
+
+# Import numpy for random selection
 import numpy as np
 
 
