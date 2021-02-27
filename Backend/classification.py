@@ -69,3 +69,32 @@ def test_model(classifier, training_matrices, test_matrices):
     predictions = classifier.predict(test_matrices[0])
     accuracy = accuracy_score(test_matrices[1], predictions)
     return accuracy
+
+
+def run_algorithm(training_matrices, classifier, **params):
+    test_matrices = generate_test_data(5000)
+    acc = test_model(make_classifier(
+        classifier, params=params), training_matrices, test_matrices)
+    return acc
+
+
+def create_plot(classifier, k_space, n_space, accuracies):
+    """Return an iamge of a plot of average accuracy across the appropriate varied parameter."""
+    pass
+
+
+def run_process(full_animal_dict, classifier):
+    training_matrices = make_training_matrices(full_animal_dict)
+    training_size = len(training_matrices[1])
+    k_space = np.linspace(1, training_size - 1, num=10, dtype=np.int32)
+    n_space = np.array([50, 75, 100, 125, 150, 175, 200, 225, 250, 275])
+    accuracies = np.zeros(shape=(10,))
+
+    for i in range(10):
+        average_acc = 0
+        for _ in range(3):
+            average_acc += run_algorithm(training_matrices,
+                                         classifier, k=k_space[i], n=n_space[i])
+        average_acc /= 3
+        accuracies[i] = average_acc
+    create_plot(classifier, k_space, n_space, accuracies)
