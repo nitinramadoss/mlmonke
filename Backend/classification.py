@@ -27,3 +27,14 @@ def generate_test_data(count):
         # the floor of the animal key divided by 3 gives the class number for Mammal, ReptileAmph, or Bird
         class_matrix[i] = int(choice / 3.0)
     return (feature_matrix, class_matrix)
+
+
+def make_classifier(classifier_type, **params):
+    """Create classifier with appropriate parameters passed in as keyword arguments."""
+    classifier = None
+    if classifier_type == KNeighborsClassifier:
+        classifier = KNeighborsClassifier(n_neighbors=params['k'])
+    elif classifier_type == RandomForestClassifier:
+        classifier = RandomForestClassifier(
+            n_estimators=params['n'], max_depth=params['d'])  # may revisit these parameters
+    return classifier
