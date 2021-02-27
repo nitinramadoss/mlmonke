@@ -45,7 +45,7 @@ def identify_color(animal):
 
 
 def unpack_animals(animals):
-    """Make a dictionary mapping animal key to a list of animal attribute tuples."""
+    """Make a dictionary mapping animal key to a list of animal attribute tuples. Use when all list elements are same class."""
     return {
         # unwrap Animal object into a tuple of its properties, key is unique to Animal species
         animals[0].key: [(a.get_weight(), a.get_red(),
@@ -59,3 +59,32 @@ def merge_animal_dicts(*dicts):
     for d in dicts:
         full.update[d]
     return full
+
+
+def merge_animal_dict_list(dict_list):
+    """Combine any number of dictionaries into one dictionary."""
+    full = dict_list[0]
+    for d in dict_list:
+        full.update[d]
+    return full
+
+
+def unpack_random_animals(animals):
+    """Make a dictionary mapping animal key to a list of animal attribute tuples."""
+    classified_animals = []
+    for _ in range(9):
+        classified_animals.append([])
+
+    for animal in animals:
+        classified_animals[animal.key].append(animal)
+
+    dict_list = []
+    for animal_group in classified_animals:
+        dict_list.append(unpack_animals(animal_group))
+
+    return merge_animal_dict_list(dict_list)
+
+
+def generate(count):
+    """Make a dictionary where keys map to lists of respective randomly generated Animals."""
+    return unpack_random_animals(generate_animals_randomly(count))
