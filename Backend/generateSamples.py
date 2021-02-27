@@ -3,6 +3,7 @@
 # the animal generated corresponds to the key value
 # color_rgbs is a dictionary that maps string color names to rgb tuples
 from definitions import mappings, color_rgbs
+import numpy as np
 
 
 def generate_animals(animal_choice, count):
@@ -11,6 +12,18 @@ def generate_animals(animal_choice, count):
     for _ in range(count):
         # uses the animal choice to map to appropriate function pointer and create Animal object
         animals.append(mappings[animal_choice]())
+
+    return animals  # list of Animal objects
+
+
+def generate_animals_randomly(count):
+    """Make a list of Animal objects with a random number of each Animal and randomly generated properties."""
+    animals = []
+    for _ in range(count):
+        # chooses an animal at random from one of the map keys
+        animal_choice = np.random.choice(list(mappings.keys()))
+        # generates a list of 1 animal and takes the first element
+        animals.append(generate_animals(animal_choice, 1)[0])
 
     return animals  # list of Animal objects
 
