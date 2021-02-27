@@ -1,3 +1,4 @@
+# Import numpy for random generation over distribution
 import numpy as np
 
 
