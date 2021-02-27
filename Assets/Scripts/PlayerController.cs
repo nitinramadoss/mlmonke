@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        position.x = Input.GetAxisRaw("Horizontal");
-        position.y = Input.GetAxisRaw("Vertical");
+        UpdatePosition();   
+
     }
 
     void FixedUpdate()
@@ -26,4 +26,28 @@ public class PlayerController : MonoBehaviour
             body.MovePosition(body.position + position * speed * Time.fixedDeltaTime);
         }
     }
+
+    void UpdatePosition()
+    {
+        position.x = Input.GetAxisRaw("Horizontal");
+        position.y = Input.GetAxisRaw("Vertical");
+
+        if (position.x == 1)
+        {
+            this.GetComponent<Animator>().Play("walkHRight");
+        } else if (position.x == -1)
+        {
+            this.GetComponent<Animator>().Play("walkHLeft");
+        }
+
+        if (position.y == 1)
+        {
+            this.GetComponent<Animator>().Play("walkVUp");
+        }
+        else if (position.y == -1)
+        {
+            this.GetComponent<Animator>().Play("walkVDown");
+        }
+       
+    } 
 }
