@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Animal:
     def __init__(self, attributes):
         self.weight = attributes[0]
@@ -113,3 +116,21 @@ class Seagull(Bird):
     def __init__(self, attributes):
         self.weight = attributes[0]
         self.color = attributes[1]
+
+
+def make_animal(weight_mean, weight_sd, r_mean, g_mean, b_mean, color_sd, grey_scale=False):
+    weight = 0
+    color = (0, 0, 0)
+
+    while(weight <= 0 or color[0] < 0 or color[0] > 255 or color[1] < 0 or color[1] > 255 or color[2] < 0 or color[2] > 255):
+        # randomly generate weight along normal distribution
+        weight = np.random.normal(loc=weight_mean, scale=weight_sd)
+        if not grey_scale:
+            # randomly generate color along normal distribution
+            color = (np.random.normal(loc=r_mean, scale=color_sd), np.random.normal(
+                loc=g_mean, scale=color_sd), np.random.normal(loc=b_mean, scale=color_sd))
+        else:
+            col_val = np.random.normal(loc=r_mean, scale=color_sd)
+            # make R = G = B to produce grey color
+            color = (col_val, col_val, col_val)
+    return (weight, color)
