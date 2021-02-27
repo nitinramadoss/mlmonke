@@ -5,7 +5,7 @@ def main():
     train = classification.generate_test_data(15)
     test = classification.generate_test_data(5000)
     acc = classification.test_model(classification.make_classifier(
-        classification.KNeighborsClassifier, k=1), train, test)
+        classification.RandomForestClassifier, n=150, d=None), train, test)
     return acc
 
 
