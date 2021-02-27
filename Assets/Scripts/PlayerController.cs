@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private float speed = 5f;
     void Start()
     {
-       
+    
     }
 
     // Update is called once per frame
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            StartCoroutine(SendData("https://f42059067a63.ngrok.io/oog"));
+            StartCoroutine(SendData("https://e37feebda515.ngrok.io/"));
         }
 
 
@@ -88,19 +88,19 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator SendData(string url)
     {
-        Tuple<string, int> data = new Tuple<string, int>("weight", 100);
-
-        string jsonString = JsonUtility.ToJson(data, true);
+        string b = "";
+        string jsonString = JsonUtility.ToJson(b, true);
 
         UnityWebRequest request = new UnityWebRequest(url, "POST");
         request.SetRequestHeader("Content-Type", "application/json");
 
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonString);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonString);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
 
 
-        yield return request.SendWebRequest();
+        yield return request.SendWebRequest();  
 
         if (request.isNetworkError || request.isHttpError)
         {
