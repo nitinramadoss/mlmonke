@@ -17,9 +17,24 @@ from sklearn.metrics import accuracy_score
 classifiers = [KNeighborsClassifier, RandomForestClassifier]
 
 
-def make_training_matrices():
+def make_training_matrices(full_animal_dict):
     """Convert user's data from Unity into numpy matrices in the same shapes as generated test data."""
-    pass  # I'll fill this in once I know how the POST requested data from the frontend looks
+    size = 0
+    for key in full_animal_dict.keys():
+        size += len(full_animal_dict[key])
+
+    feature_matrix = np.zeros(shape=(size, 4))
+    class_matrix = np.zeros(shape=(size,))
+
+    idx = 0
+    for key in full_animal_dict.keys():
+        for animal in full_animal_dict[key]:
+            feature_matrix[idx] = np.array([animal[0], animal[1],
+                                            animal[2], animal[3]])
+            class_matrix[idx] = int(key / 3.0)
+            idx += 1
+
+    return (feature_matrix, class_matrix)
 
 
 def generate_test_data(count):
