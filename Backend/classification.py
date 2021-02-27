@@ -10,6 +10,9 @@ import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 
+# Import evaluation tools
+from sklearn.metrics import accuracy_score
+
 # a list of all the available algorithms
 classifiers = [KNeighborsClassifier, RandomForestClassifier]
 
@@ -38,3 +41,11 @@ def make_classifier(classifier_type, **params):
         classifier = RandomForestClassifier(
             n_estimators=params['n'], max_depth=params['d'])  # may revisit these parameters
     return classifier
+
+
+def test_model(classifier, training_matrices, test_matrices):
+    """Compute accuracy of a given classifier on particular test data."""
+    classifier.fit(training_matrices[0], training_matrices[1])
+    predictions = classifier.predict(test_matrices[0])
+    accuracy = accuracy_score(test_matrices[1], predictions)
+    return accuracy
