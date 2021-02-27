@@ -97,4 +97,4 @@ def run_process(full_animal_dict, classifier):
                                          classifier, k=k_space[i], n=n_space[i])
         average_acc /= 3
         accuracies[i] = average_acc
-    create_plot(classifier, k_space, n_space, accuracies)
+    return create_plot(classifier, k_space, n_space, accuracies)
