@@ -30,9 +30,9 @@ public static class DataRequester
             string result = request.downloadHandler.text;
             Debug.Log(result);
 
-            AnimalResponse content = (AnimalResponse)JsonUtility.FromJson<AnimalResponse>(result);
+            AnimalResponse animalResponse = (AnimalResponse)JsonUtility.FromJson<AnimalResponse>(result);
 
-            Debug.Log(content.monkey);
+            //Debug.Log(animalResponse.monkey);
 
         }
     }
