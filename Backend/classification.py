@@ -13,6 +13,7 @@ from sklearn.ensemble import RandomForestClassifier
 # Import evaluation tools
 from sklearn.metrics import accuracy_score
 
+
 # a list of all the available algorithms
 classifiers = [KNeighborsClassifier, RandomForestClassifier]
 
@@ -31,7 +32,7 @@ def make_training_matrices(full_animal_dict):
         for animal in full_animal_dict[key]:
             feature_matrix[idx] = np.array([animal[0], animal[1],
                                             animal[2], animal[3]])
-            class_matrix[idx] = int(key / 3.0)
+            class_matrix[idx] = int(int(key) / 3.0)
             idx += 1
 
     return (feature_matrix, class_matrix)
@@ -74,13 +75,8 @@ def test_model(classifier, training_matrices, test_matrices):
 def run_algorithm(training_matrices, classifier, **params):
     test_matrices = generate_test_data(5000)
     acc = test_model(make_classifier(
-        classifier, params=params), training_matrices, test_matrices)
+        classifier, k=params['k'], n=params['n']), training_matrices, test_matrices)
     return acc
-
-
-def create_plot(classifier, k_space, n_space, accuracies):
-    """Return an iamge of a plot of average accuracy across the appropriate varied parameter."""
-    pass
 
 
 def run_process(full_animal_dict, classifier):
@@ -97,4 +93,4 @@ def run_process(full_animal_dict, classifier):
                                          classifier, k=k_space[i], n=n_space[i])
         average_acc /= 3
         accuracies[i] = average_acc
-    return create_plot(classifier, k_space, n_space, accuracies)
+    return k_space, n_space, accuracies
