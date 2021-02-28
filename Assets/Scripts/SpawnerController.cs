@@ -5,8 +5,13 @@ using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
 {
+    Biome[] biomes; // jungle, swamp, and beach
+   
     public Transform[] allSpawners;
     public GameObject[] allAnimals;
+
+    private ArrayList randomlySpawnedAnimals;
+
     private const int SPAWNER_COUNT = 10;
 
     class Biome
@@ -45,30 +50,35 @@ public class SpawnerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (randomlySpawnedAnimals != null)
+        {
+            AnimateNPCS();
+        }
     }
 
     void InitializeBiomes()
     {
-        Biome jungle = new Biome("Jungle", 4);
-        Biome swamp = new Biome("Swamp", 4);
-        Biome beach = new Biome("Beach", 2);
+        biomes = new Biome[3];
+
+        biomes[0] = new Biome("Jungle", 4);
+        biomes[1] = new Biome("Swamp", 4);
+        biomes[2] = new Biome("Beach", 2);
 
         // Add spawners to each biome instance
         for (int i = 0; i < SPAWNER_COUNT; i++)
         {
             if (i < 4)
             {
-                jungle.addSpawner(allSpawners[i]);
+                biomes[0].addSpawner(allSpawners[i]);
             } else if (i < 8)
             {
-                swamp.addSpawner(allSpawners[i]);
+                biomes[1].addSpawner(allSpawners[i]);
             } else
             {
-                beach.addSpawner(allSpawners[i]);
+                biomes[2].addSpawner(allSpawners[i]);
             }
         }
-        Debug.Log(jungle.spawners[0]);
+      
         // Add animals to each biome instance
         string[] jungleAnimalNames = {"Monkey", "Lion", "Parrot", "Frog"};
         string[] swampAnimalNames = { "Duck", "Hippo", "Crocodile", "Cobra" };
@@ -78,26 +88,28 @@ public class SpawnerController : MonoBehaviour
         {
             if (Array.IndexOf(jungleAnimalNames, animal.name) != -1)
             {
-                jungle.addAnimal(animal);
+                biomes[0].addAnimal(animal);
             }
 
             if (Array.IndexOf(swampAnimalNames, animal.name) != -1)
             {
-                swamp.addAnimal(animal);
+                biomes[1].addAnimal(animal);
             }
 
             if (Array.IndexOf(beachAnimalNames, animal.name) != -1)
             {
-                beach.addAnimal(animal);
+                biomes[2].addAnimal(animal);
             }
         }
 
-        Biome[] biomes = {jungle, swamp, beach};
+        
 
-        RandomlySpawnAnimals(biomes);
+        RandomlySpawnAnimals();
     }
-    void RandomlySpawnAnimals(Biome[] biomes)
+    void RandomlySpawnAnimals()
     {
+        randomlySpawnedAnimals = new ArrayList();
+
         const int MAX_ANIMALS_PER_SPAWNER = 7;
         const int MIN_ANIMALS_PER_SPAWNER = 3;
 
@@ -110,7 +122,8 @@ public class SpawnerController : MonoBehaviour
                 for (int iter = 0; iter < numAnimals; iter++) {
                     Vector3 randPoint = GetRandomSpawnPoint((Transform)biome.spawners[i]);
 
-                    Instantiate((GameObject)biome.animals[i], randPoint, transform.rotation);
+                    GameObject animalClone = Instantiate((GameObject)biome.animals[i], randPoint, transform.rotation);
+                    randomlySpawnedAnimals.Add(animalClone);
                 }
             }
         }
@@ -125,5 +138,44 @@ public class SpawnerController : MonoBehaviour
         Vector3 spawnPoint = new Vector3(randX, randY, spawner.position.z);
 
         return spawnPoint;
+    }
+
+    IEnumerator AnimateNPCS()
+    {
+        const int MAX_WALK_DISTANCE = 5;
+        const int MIN_WALK_DISTANCE = -5;
+        const float speed = 4f;
+       
+        foreach (GameObject animal in randomlySpawnedAnimals)
+        {
+            //animal.SetActive(true);
+            //animal.GetComponent<Animator>().Play("walkHRight");
+         
+            Rigidbody2D rb = animal.GetComponent<Rigidbody2D>();
+
+            int randX = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
+            int randY = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
+            Vector2 position = new Vector2(randX, randY);
+
+            animal.GetComponent<Rigidbody2D>().MovePosition(rb.position + position * speed * Time.fixedDeltaTime);
+        }
+
+        //yield return new WaitForSeconds(5f);
+
+        //foreach (GameObject animal in randomlySpawnedAnimals)
+        //{
+        //    animal.SetActive(true);
+        //    animal.GetComponent<Animator>().Play("walkHLeft");
+
+        //    Rigidbody2D rb = animal.GetComponent<Rigidbody2D>();
+
+        //    int randX = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
+        //    int randY = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
+        //    Vector2 position = new Vector2(randX, randY);
+
+        //    animal.GetComponent<Rigidbody2D>().MovePosition(rb.position + position * speed * Time.fixedDeltaTime);
+        //}
+
+        yield return new WaitForSeconds(5f);
     }
 }
