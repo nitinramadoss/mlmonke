@@ -187,6 +187,18 @@ mappings = {
     8: make_seagull
 }
 
+key_to_animal = {
+    0: "monkey",
+    1: "lion",
+    2: "hippo",
+    3: "crocodile",
+    4: "cobra",
+    5: "frog",
+    6: "parrot",
+    7: "duck",
+    8: "seagull"
+}
+
 color_rgbs = {
     'brown': (60, 46, 33),
     'red': (128, 0, 0),
