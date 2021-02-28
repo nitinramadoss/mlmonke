@@ -2,7 +2,7 @@
 # these functions create randomly generated Animal objects
 # the animal generated corresponds to the key value
 # color_rgbs is a dictionary that maps string color names to rgb tuples
-from definitions import mappings, color_rgbs
+from definitions import mappings, color_rgbs, key_to_animal
 
 # Import numpy for random selection
 import numpy as np
@@ -46,10 +46,17 @@ def identify_color(animal):
 
 def unpack_animals(animals):
     """Make a dictionary mapping animal key to a list of animal attribute tuples. Use when all list elements are same class."""
+    ret_list = []
+    for animal in animals:
+        ret_list.append(str(animal.get_weight()))
+        ret_list.append(str(animal.get_red()))
+        ret_list.append(str(animal.get_green()))
+        ret_list.append(str(animal.get_blue()))
+        ret_list.append(identify_color(animal))
     return {
-        # unwrap Animal object into a tuple of its properties, key is unique to Animal species
-        animals[0].key: [(a.get_weight(), a.get_red(),
-                          a.get_green(), a.get_blue(), identify_color(a)) for a in animals]
+        # unwrap Animal object into a list of its properties, key is unique to Animal species
+        # key_to_animal[animals[0].key]: [[str(a.get_weight()), str(a.get_red()), str(a.get_green()), str(a.get_blue()), identify_color(a)] for a in animals]
+        key_to_animal[animals[0].key]: ret_list
     }
 
 
