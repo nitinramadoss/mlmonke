@@ -30,6 +30,10 @@ def create_plot(classifier, k_space, n_space, accuracies):
     ax = fig.add_subplot(111)
     print(x)
     ax.plot(x, accuracies, 'b')
+    if classifier == classifiers[0]:
+        ax.set_title('KNN Classifier Accuracies Versus Number of Neighbors')
+    elif classifier == classifiers[1]:
+        ax.set_title('Random Forest Model Accuracies Versus Number of Trees')
 
     # p = plt.plot(x, accuracies, 'b')
 
