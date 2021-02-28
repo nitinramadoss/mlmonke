@@ -14,6 +14,9 @@ public class SpawnerController : MonoBehaviour
 
     private const int SPAWNER_COUNT = 10;
 
+    // spawned animation state
+    private bool move;
+
     class Biome
     {
         public string name;
@@ -45,14 +48,15 @@ public class SpawnerController : MonoBehaviour
     void Start()
     {
         InitializeBiomes();
+        move = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (randomlySpawnedAnimals != null)
+        if (randomlySpawnedAnimals != null && move)
         {
-            AnimateNPCS();
+            StartCoroutine(AnimateNPCS());
         }
     }
 
@@ -142,40 +146,46 @@ public class SpawnerController : MonoBehaviour
 
     IEnumerator AnimateNPCS()
     {
+        move = false;
+
+        AnimateNPCHelper();
+
+        yield return new WaitForSeconds(1f);
+
+        AnimateNPCHelper();
+
+        yield return new WaitForSeconds(1f);
+
+        move = true;
+    }
+
+    void AnimateNPCHelper()
+    {
         const int MAX_WALK_DISTANCE = 5;
         const int MIN_WALK_DISTANCE = -5;
         const float speed = 4f;
-       
+
         foreach (GameObject animal in randomlySpawnedAnimals)
         {
-            //animal.SetActive(true);
-            //animal.GetComponent<Animator>().Play("walkHRight");
-         
+            animal.SetActive(true);
+
+
             Rigidbody2D rb = animal.GetComponent<Rigidbody2D>();
 
             int randX = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
             int randY = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
             Vector2 position = new Vector2(randX, randY);
 
+            if (randX > 0)
+            {
+                animal.GetComponent<Animator>().Play("walkHRight");
+            }
+            else
+            {
+                animal.GetComponent<Animator>().Play("walkHLeft");
+            }
+
             animal.GetComponent<Rigidbody2D>().MovePosition(rb.position + position * speed * Time.fixedDeltaTime);
         }
-
-        //yield return new WaitForSeconds(5f);
-
-        //foreach (GameObject animal in randomlySpawnedAnimals)
-        //{
-        //    animal.SetActive(true);
-        //    animal.GetComponent<Animator>().Play("walkHLeft");
-
-        //    Rigidbody2D rb = animal.GetComponent<Rigidbody2D>();
-
-        //    int randX = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
-        //    int randY = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
-        //    Vector2 position = new Vector2(randX, randY);
-
-        //    animal.GetComponent<Rigidbody2D>().MovePosition(rb.position + position * speed * Time.fixedDeltaTime);
-        //}
-
-        yield return new WaitForSeconds(5f);
     }
 }
