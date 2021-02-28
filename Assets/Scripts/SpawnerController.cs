@@ -167,25 +167,28 @@ public class SpawnerController : MonoBehaviour
 
         foreach (GameObject animal in randomlySpawnedAnimals)
         {
-            animal.SetActive(true);
-
-
-            Rigidbody2D rb = animal.GetComponent<Rigidbody2D>();
-
-            int randX = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
-            int randY = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
-            Vector2 position = new Vector2(randX, randY);
-
-            if (randX > 0)
+            if (animal != null)
             {
-                animal.GetComponent<Animator>().Play("walkHRight");
-            }
-            else
-            {
-                animal.GetComponent<Animator>().Play("walkHLeft");
-            }
+                animal.SetActive(true);
 
-            animal.GetComponent<Rigidbody2D>().MovePosition(rb.position + position * speed * Time.fixedDeltaTime);
+
+                Rigidbody2D rb = animal.GetComponent<Rigidbody2D>();
+
+                int randX = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
+                int randY = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
+                Vector2 position = new Vector2(randX, randY);
+
+                if (randX > 0)
+                {
+                    animal.GetComponent<Animator>().Play("walkHRight");
+                }
+                else
+                {
+                    animal.GetComponent<Animator>().Play("walkHLeft");
+                }
+
+                animal.GetComponent<Rigidbody2D>().MovePosition(rb.position + position * speed * Time.fixedDeltaTime);
+            }
         }
     }
 }
