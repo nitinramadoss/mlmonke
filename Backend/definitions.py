@@ -144,7 +144,7 @@ def make_monkey():
 
 
 def make_lion():
-    return Lion(make_animal(350, 50, 222, 204, 156, 5))
+    return Lion(make_animal(350, 50, 222, 204, 156, 10))
 
 
 def make_hippo():
