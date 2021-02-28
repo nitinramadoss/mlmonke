@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            StartCoroutine(SendData("https://e37feebda515.ngrok.io/"));
+            StartCoroutine(SendData("https://cbd2406ef0a2.ngrok.io/results"));
         }
 
 
