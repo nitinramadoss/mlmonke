@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class AnimalResponse
 {
+    /* Each list contains is every feature of that animal type["weight", "red", "green", "blue", "color name"]
+     * Every 5 elements is mapped to one individual animal of that type
+     * 
+    */
+
     public string[] cobra; // 4
     public string[] crocodile; // 3
     public string[] duck; // 7
