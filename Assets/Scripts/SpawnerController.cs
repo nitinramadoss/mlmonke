@@ -13,26 +13,27 @@ public class SpawnerController : MonoBehaviour
     {
         public string name;
         public int numSpawners;
-        public Transform[] spawners;
-        public GameObject[] animals;
+        public ArrayList spawners; // Transforms
+        public ArrayList animals; // Game objects
+        public int size;
 
         public Biome(string name, int numSpawners)
         {
             this.name = name;
             this.numSpawners = numSpawners;
 
-            spawners = new Transform[numSpawners];
-            animals = new GameObject[numSpawners];
+            spawners = new ArrayList();
+            animals = new ArrayList();
         }
 
         public void addSpawner(Transform s)
         {
-            spawners[spawners.Length - 1] = s;   
+            spawners.Add(s);
         }
 
         public void addAnimal(GameObject a)
         {
-            animals[animals.Length - 1] = a;
+            animals.Add(a);
         }
     }
     // Start is called before the first frame update
@@ -67,10 +68,10 @@ public class SpawnerController : MonoBehaviour
                 beach.addSpawner(allSpawners[i]);
             }
         }
-
+        Debug.Log(jungle.spawners[0]);
         // Add animals to each biome instance
         string[] jungleAnimalNames = {"Monkey", "Lion", "Parrot", "Frog"};
-        string[] swampAnimalNames = { "Duck", "Hippo", "Crocodile", "Snake" };
+        string[] swampAnimalNames = { "Duck", "Hippo", "Crocodile", "Cobra" };
         string[] beachAnimalNames = { "Duck", "Seagull"};
 
         foreach (GameObject animal in allAnimals)
@@ -97,20 +98,32 @@ public class SpawnerController : MonoBehaviour
     }
     void RandomlySpawnAnimals(Biome[] biomes)
     {
+        const int MAX_ANIMALS_PER_SPAWNER = 7;
+        const int MIN_ANIMALS_PER_SPAWNER = 3;
 
-        foreach (Biome biome in biomes)
+        foreach (Biome biome in biomes) // 3 biomes
         {
+            for (int i = 0; i < biome.spawners.Count; i++) // 10 spawners total
+            {
+                int numAnimals = UnityEngine.Random.Range(MIN_ANIMALS_PER_SPAWNER, MAX_ANIMALS_PER_SPAWNER);
 
-            int rand = UnityEngine.Random.Range(0, allAnimals.Length);
-            int randPoint = UnityEngine.Random.Range(0, allSpawners.Length);
+                for (int iter = 0; iter < numAnimals; iter++) {
+                    Vector3 randPoint = GetRandomSpawnPoint((Transform)biome.spawners[i]);
 
-            Instantiate(allAnimals[rand], allSpawners[randPoint].position, transform.rotation);
+                    Instantiate((GameObject)biome.animals[i], randPoint, transform.rotation);
+                }
+            }
         }
     }
 
-    void GetRandomPosition(Transform spawner)
+    Vector3 GetRandomSpawnPoint(Transform spawner)
     {
         const int OFFSET = 5;
+        int randX = UnityEngine.Random.Range((int)spawner.position.x-OFFSET, (int)spawner.position.x + OFFSET);
+        int randY = UnityEngine.Random.Range((int)spawner.position.y - OFFSET, (int)spawner.position.y + OFFSET);
 
+        Vector3 spawnPoint = new Vector3(randX, randY, spawner.position.z);
+
+        return spawnPoint;
     }
 }
