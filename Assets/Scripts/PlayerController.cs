@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private float speed = 5f;
     void Start()
     {
-    
+        StartCoroutine(DataRequester.RequestData("https://0fdfbb5de773.ngrok.io/generate"));
     }
 
     // Update is called once per frame
@@ -56,60 +56,5 @@ public class PlayerController : MonoBehaviour
             }
         }   
 
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            StartCoroutine(RequestData("https://9b098af2afe2.ngrok.io/generate"));
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            StartCoroutine(SendData("https://cbd2406ef0a2.ngrok.io/results"));
-        }
-
-
     } 
-
-    IEnumerator RequestData(string url)
-    {
-        UnityWebRequest request = UnityWebRequest.Get(url);
-        request.SetRequestHeader("Content-Type", "application/json");
-        yield return request.SendWebRequest();
-
-        if (request.isNetworkError || request.isHttpError)
-        {
-            Debug.Log(request.error);
-        }
-        else
-        {
-            // Show results as text
-            Debug.Log(request.downloadHandler.text);
-        }
-    }
-
-    IEnumerator SendData(string url)
-    {
-        string b = "";
-        string jsonString = JsonUtility.ToJson(b, true);
-
-        UnityWebRequest request = new UnityWebRequest(url, "POST");
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonString);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-
-        yield return request.SendWebRequest();  
-
-        if (request.isNetworkError || request.isHttpError)
-        {
-            Debug.Log(request.error);
-        }
-        else
-        {
-            // Show results as text
-            Debug.Log(request.downloadHandler.text);
-        }
-    }
 }
