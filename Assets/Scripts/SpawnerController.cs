@@ -16,6 +16,7 @@ public class SpawnerController : MonoBehaviour
 
     // spawned animation state
     private bool move;
+    private bool spawned;
 
     class Biome
     {
@@ -49,12 +50,18 @@ public class SpawnerController : MonoBehaviour
     {
         InitializeBiomes();
         move = true;
+        spawned = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (randomlySpawnedAnimals != null && move)
+        if (!spawned)
+        {
+            RandomlySpawnAnimals();
+        }
+
+        if (spawned && randomlySpawnedAnimals != null && move)
         {
             StartCoroutine(AnimateNPCS());
         }
@@ -106,11 +113,9 @@ public class SpawnerController : MonoBehaviour
             }
         }
 
-        
-
-        RandomlySpawnAnimals();
+       StartCoroutine(DataRequester.RequestData("http://d08180a0d716.ngrok.io/generate")); // request animal data
     }
-    void RandomlySpawnAnimals()
+    public void RandomlySpawnAnimals()
     {
         randomlySpawnedAnimals = new ArrayList();
 
@@ -119,6 +124,12 @@ public class SpawnerController : MonoBehaviour
             for (int i = 0; i < biome.spawners.Count; i++) // 10 spawners total
             {
                 UnityEngine.GameObject animalGameObject = (UnityEngine.GameObject)biome.animals[i];
+                
+                if (!AnimalController.animalMap.ContainsKey(animalGameObject.name))
+                {
+                    spawned = false;
+                    return;
+                }
 
                 for (int iter = 0; iter < AnimalController.animalMap[animalGameObject.name].Count; iter++) {
                     Vector3 randPoint = GetRandomSpawnPoint((Transform)biome.spawners[i]);
@@ -128,6 +139,8 @@ public class SpawnerController : MonoBehaviour
                 }
             }
         }
+
+        spawned = true;
     }
 
     Vector3 GetRandomSpawnPoint(Transform spawner)

@@ -5,15 +5,6 @@ using UnityEngine.Networking;
 
 public static class DataRequester
 {
-    // if (Input.GetKeyDown(KeyCode.G))
-    //    {
-    //        StartCoroutine(RequestData("https://9b098af2afe2.ngrok.io/generate"));
-    //    }
-
-    //if (Input.GetKeyDown(KeyCode.H))
-    //{
-    //    StartCoroutine(SendData("https://cbd2406ef0a2.ngrok.io/results"));
-    //}
     public static IEnumerator RequestData(string url)
     {
         UnityWebRequest request = UnityWebRequest.Get(url);
@@ -31,7 +22,6 @@ public static class DataRequester
             Debug.Log(result);
 
             AnimalResponse animalResponse = (AnimalResponse)JsonUtility.FromJson<AnimalResponse>(result);
-
 
             loadAnimals(animalResponse);
         }
@@ -104,8 +94,6 @@ public static class DataRequester
             AnimalController.animalMap["Seagull"].Add(new AnimalController.AnimalObj(animalResponse.seagull[i], animalResponse.seagull[i + 1],
                 animalResponse.seagull[i + 2], animalResponse.seagull[i + 3], animalResponse.seagull[i + 4]));
         }
-
-        //AnimalController.AnimalObj obj = (AnimalController.AnimalObj) AnimalController.animalMap["Monkey"][0];
     }
 
     public static IEnumerator SendData(string url)

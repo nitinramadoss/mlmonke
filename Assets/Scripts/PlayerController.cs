@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private float speed = 5f;
     void Start()
     {
-        StartCoroutine(DataRequester.RequestData("https://0fdfbb5de773.ngrok.io/generate"));
+    
     }
 
     // Update is called once per frame
