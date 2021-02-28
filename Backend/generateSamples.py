@@ -38,7 +38,7 @@ def identify_color(animal):
         color_rgb = color_rgbs[color]
         dist = ((animal.get_red() - color_rgb[0]) ** 2) + (
             (animal.get_green() - color_rgb[1]) ** 2) + ((animal.get_blue() - color_rgb[2]) ** 2)
-        if dist < min_dist or min_dist is None:
+        if (min_dist is None) or (dist < min_dist):
             min_dist = dist
             identified_color = color
     return identified_color
