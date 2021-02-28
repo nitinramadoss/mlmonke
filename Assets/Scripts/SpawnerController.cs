@@ -21,7 +21,7 @@ public class SpawnerController : MonoBehaviour
     {
         public string name;
         public int numSpawners;
-        public ArrayList spawners; // Transforms
+        public ArrayList spawners; // Transforms // indices match animal array list indices
         public ArrayList animals; // Game objects
         public int size;
 
@@ -114,16 +114,13 @@ public class SpawnerController : MonoBehaviour
     {
         randomlySpawnedAnimals = new ArrayList();
 
-        const int MAX_ANIMALS_PER_SPAWNER = 7;
-        const int MIN_ANIMALS_PER_SPAWNER = 3;
-
         foreach (Biome biome in biomes) // 3 biomes
         {
             for (int i = 0; i < biome.spawners.Count; i++) // 10 spawners total
             {
-                int numAnimals = UnityEngine.Random.Range(MIN_ANIMALS_PER_SPAWNER, MAX_ANIMALS_PER_SPAWNER);
+                UnityEngine.GameObject animalGameObject = (UnityEngine.GameObject)biome.animals[i];
 
-                for (int iter = 0; iter < numAnimals; iter++) {
+                for (int iter = 0; iter < AnimalController.animalMap[animalGameObject.name].Count; iter++) {
                     Vector3 randPoint = GetRandomSpawnPoint((Transform)biome.spawners[i]);
 
                     GameObject animalClone = Instantiate((GameObject)biome.animals[i], randPoint, transform.rotation);
@@ -135,7 +132,7 @@ public class SpawnerController : MonoBehaviour
 
     Vector3 GetRandomSpawnPoint(Transform spawner)
     {
-        const int OFFSET = 5;
+        const int OFFSET = 7;
         int randX = UnityEngine.Random.Range((int)spawner.position.x-OFFSET, (int)spawner.position.x + OFFSET);
         int randY = UnityEngine.Random.Range((int)spawner.position.y - OFFSET, (int)spawner.position.y + OFFSET);
 
