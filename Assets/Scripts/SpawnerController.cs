@@ -16,12 +16,13 @@ public class SpawnerController : MonoBehaviour
 
     // spawned animation state
     private bool move;
+    private bool spawned;
 
     class Biome
     {
         public string name;
         public int numSpawners;
-        public ArrayList spawners; // Transforms
+        public ArrayList spawners; // Transforms // indices match animal array list indices
         public ArrayList animals; // Game objects
         public int size;
 
@@ -49,12 +50,18 @@ public class SpawnerController : MonoBehaviour
     {
         InitializeBiomes();
         move = true;
+        spawned = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (randomlySpawnedAnimals != null && move)
+        if (!spawned)
+        {
+            RandomlySpawnAnimals();
+        }
+
+        if (spawned && randomlySpawnedAnimals != null && move)
         {
             StartCoroutine(AnimateNPCS());
         }
@@ -106,24 +113,25 @@ public class SpawnerController : MonoBehaviour
             }
         }
 
-        
-
-        RandomlySpawnAnimals();
+       StartCoroutine(DataRequester.RequestData("http://d08180a0d716.ngrok.io/generate")); // request animal data
     }
-    void RandomlySpawnAnimals()
+    public void RandomlySpawnAnimals()
     {
         randomlySpawnedAnimals = new ArrayList();
-
-        const int MAX_ANIMALS_PER_SPAWNER = 7;
-        const int MIN_ANIMALS_PER_SPAWNER = 3;
 
         foreach (Biome biome in biomes) // 3 biomes
         {
             for (int i = 0; i < biome.spawners.Count; i++) // 10 spawners total
             {
-                int numAnimals = UnityEngine.Random.Range(MIN_ANIMALS_PER_SPAWNER, MAX_ANIMALS_PER_SPAWNER);
+                UnityEngine.GameObject animalGameObject = (UnityEngine.GameObject)biome.animals[i];
+                
+                if (!AnimalController.animalMap.ContainsKey(animalGameObject.name))
+                {
+                    spawned = false;
+                    return;
+                }
 
-                for (int iter = 0; iter < numAnimals; iter++) {
+                for (int iter = 0; iter < AnimalController.animalMap[animalGameObject.name].Count; iter++) {
                     Vector3 randPoint = GetRandomSpawnPoint((Transform)biome.spawners[i]);
 
                     GameObject animalClone = Instantiate((GameObject)biome.animals[i], randPoint, transform.rotation);
@@ -131,6 +139,8 @@ public class SpawnerController : MonoBehaviour
                 }
             }
         }
+
+        spawned = true;
     }
 
     Vector3 GetRandomSpawnPoint(Transform spawner)
@@ -167,25 +177,28 @@ public class SpawnerController : MonoBehaviour
 
         foreach (GameObject animal in randomlySpawnedAnimals)
         {
-            animal.SetActive(true);
-
-
-            Rigidbody2D rb = animal.GetComponent<Rigidbody2D>();
-
-            int randX = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
-            int randY = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
-            Vector2 position = new Vector2(randX, randY);
-
-            if (randX > 0)
+            if (animal != null)
             {
-                animal.GetComponent<Animator>().Play("walkHRight");
-            }
-            else
-            {
-                animal.GetComponent<Animator>().Play("walkHLeft");
-            }
+                animal.SetActive(true);
 
-            animal.GetComponent<Rigidbody2D>().MovePosition(rb.position + position * speed * Time.fixedDeltaTime);
+
+                Rigidbody2D rb = animal.GetComponent<Rigidbody2D>();
+
+                int randX = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
+                int randY = UnityEngine.Random.Range(MIN_WALK_DISTANCE, MAX_WALK_DISTANCE);
+                Vector2 position = new Vector2(randX, randY);
+
+                if (randX > 0)
+                {
+                    animal.GetComponent<Animator>().Play("walkHRight");
+                }
+                else
+                {
+                    animal.GetComponent<Animator>().Play("walkHLeft");
+                }
+
+                animal.GetComponent<Rigidbody2D>().MovePosition(rb.position + position * speed * Time.fixedDeltaTime);
+            }
         }
     }
 }
