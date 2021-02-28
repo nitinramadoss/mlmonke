@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ColliderController : MonoBehaviour
 {
+    private Text dialogue;
+
     // Start is called before the first frame update
     public void Start()
     {
-        
+        dialogue = GameObject.Find("DialogueText").GetComponent<Text>();
     }
 
     // Update is called once per frame
@@ -39,7 +42,14 @@ public class ColliderController : MonoBehaviour
             {
                 animalObj.met = true;
                 Debug.Log(animalObj.weight);
-            }   
+            }
+
+            UpdateDialogue(animalObj.weight, animalObj.colorName);
        }
+    }
+
+    public void UpdateDialogue(string weight, string colorName)
+    {
+        dialogue.text = "Collecting data... Weight: " +  weight + " lbs " + "Color: " + colorName;
     }
 }

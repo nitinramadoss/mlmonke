@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PanelOpener : MonoBehaviour
 {
@@ -15,5 +16,4 @@ public class PanelOpener : MonoBehaviour
             Panel.SetActive(!isActive);
         }
     }
-    
 }
