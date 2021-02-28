@@ -57,7 +57,7 @@ def merge_animal_dicts(*dicts):
     """Combine any number of dictionaries into one dictionary."""
     full = dicts[0]
     for d in dicts:
-        full.update[d]
+        full.update(d)
     return full
 
 
@@ -65,7 +65,7 @@ def merge_animal_dict_list(dict_list):
     """Combine any number of dictionaries into one dictionary."""
     full = dict_list[0]
     for d in dict_list:
-        full.update[d]
+        full.update(d)
     return full
 
 
