@@ -145,7 +145,7 @@ public class SpawnerController : MonoBehaviour
 
     Vector3 GetRandomSpawnPoint(Transform spawner)
     {
-        const int OFFSET = 7;
+        const int OFFSET = 5;
         int randX = UnityEngine.Random.Range((int)spawner.position.x-OFFSET, (int)spawner.position.x + OFFSET);
         int randY = UnityEngine.Random.Range((int)spawner.position.y - OFFSET, (int)spawner.position.y + OFFSET);
 

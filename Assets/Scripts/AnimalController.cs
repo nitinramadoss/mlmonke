@@ -14,6 +14,8 @@ public static class AnimalController
         public string blue;
         public string colorName;
 
+        public bool met; // checks if the player has met this animal in-game
+
         public AnimalObj(string weight, string red, string green, string blue, string colorName)
         {
             this.weight = weight;
@@ -21,6 +23,8 @@ public static class AnimalController
             this.green = green;
             this.blue = blue;
             this.colorName = colorName;
+
+            met = false;
         }
     }
 
