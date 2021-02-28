@@ -71,15 +71,23 @@ def merge_animal_dict_list(dict_list):
 
 def unpack_random_animals(animals):
     """Make a dictionary mapping animal key to a list of animal attribute tuples."""
-    classified_animals = []
-    for _ in range(9):
-        classified_animals.append([])
+    classified_animals = {
+        0: [],
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+        7: [],
+        8: []
+    }
 
     for animal in animals:
         classified_animals[animal.key].append(animal)
 
     dict_list = []
-    for animal_group in classified_animals:
+    for animal_group in classified_animals.values():
         dict_list.append(unpack_animals(animal_group))
 
     return merge_animal_dict_list(dict_list)
