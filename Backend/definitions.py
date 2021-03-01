@@ -199,6 +199,18 @@ key_to_animal = {
     8: "seagull"
 }
 
+animal_to_key = {
+    "monkey": 0,
+    "lion": 1,
+    "hippo": 2,
+    "crocodile": 3,
+    "cobra": 4,
+    "frog": 5,
+    "parrot": 6,
+    "duck": 7,
+    "seagull": 8
+}
+
 color_rgbs = {
     'brown': (60, 46, 33),
     'red': (128, 0, 0),
