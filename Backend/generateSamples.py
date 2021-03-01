@@ -2,7 +2,7 @@
 # these functions create randomly generated Animal objects
 # the animal generated corresponds to the key value
 # color_rgbs is a dictionary that maps string color names to rgb tuples
-from definitions import mappings, color_rgbs, key_to_animal
+from definitions import mappings, color_rgbs, key_to_animal, animal_to_key
 
 # Import numpy for random selection
 import numpy as np
