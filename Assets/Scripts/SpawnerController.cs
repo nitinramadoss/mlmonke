@@ -113,7 +113,8 @@ public class SpawnerController : MonoBehaviour
             }
         }
 
-       StartCoroutine(DataRequester.RequestData("http://d08180a0d716.ngrok.io/generate")); // request animal data
+       StartCoroutine(DataRequester.RequestData("https://351ac1a19a3a.ngrok.io/generate")); // request animal data
+       StartCoroutine(DataRequester.SendData("https://351ac1a19a3a.ngrok.io/results"));
     }
     public void RandomlySpawnAnimals()
     {
