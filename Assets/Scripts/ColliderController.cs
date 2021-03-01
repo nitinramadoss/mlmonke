@@ -51,5 +51,7 @@ public class ColliderController : MonoBehaviour
     public void UpdateDialogue(string weight, string colorName)
     {
         dialogue.text = "Collecting data... Weight: " +  weight + " lbs " + "Color: " + colorName;
+
+        StartCoroutine(DataRequester.SendData("http://d08180a0d716.ngrok.io/results"));
     }
 }
