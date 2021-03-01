@@ -1,7 +1,7 @@
 # mappings is a dictionary that maps key values to function pointers
 # these functions create randomly generated Animal objects
 # the animal generated corresponds to the key value
-from definitions import mappings
+from definitions import mappings, animal_to_key
 
 # Import numpy for vectors and matrices
 import numpy as np
@@ -28,12 +28,15 @@ def make_training_matrices(full_animal_dict):
     class_matrix = np.zeros(shape=(size,))
 
     idx = 0
+
     for key in full_animal_dict.keys():
-        for animal in full_animal_dict[key]:
-            feature_matrix[idx] = np.array([animal[0], animal[1],
-                                            animal[2], animal[3]])
-            class_matrix[idx] = int(int(key) / 3.0)
-            idx += 1
+        for i in range(len(full_animal_dict[key])):
+            if i % 4 == 0:
+                animals = full_animal_dict[key]
+                feature_matrix[idx] = np.array(
+                    [animals[i], animals[i+1], animals[i+2], animals[i+3]])
+                class_matrix[idx] = int(int(animal_to_key[key]) / 3.0)
+                idx += 1
 
     return (feature_matrix, class_matrix)
 
